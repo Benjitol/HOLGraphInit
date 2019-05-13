@@ -75,9 +75,10 @@ class App extends react.Component<{}, { isAuthenticated: boolean, user:any }> {
   }
   async getUserProfile() {
     try {
-      var accessToken = await this.userAgentApplication.acquireTokenSilent({
+      var response = await this.userAgentApplication.acquireTokenSilent({
         scopes: scopes
       });
+      var accessToken = response.accessToken
       if (accessToken) {
         var user = await getUserDetails(accessToken);
         this.setState({
