@@ -4,10 +4,11 @@ import { UserAgentApplication } from 'msal';
 import { appId, scopes } from './Config';
 import 'bootstrap/dist/css/bootstrap.css';
 import NavBar from './Components/NavBar';
+import {getUserDetails} from './Services/GraphServices';
 import { Container, Row, Col } from 'reactstrap';
 import SubmitForm from './Components/SubmitForm';
 
-class App extends react.Component<{}, { isAuthenticated: boolean }> {
+class App extends react.Component<{}, { isAuthenticated: boolean, user:any }> {
   userAgentApplication: UserAgentApplication;
   submitForm: react.RefObject<SubmitForm>;
   constructor(props: any) {
@@ -20,10 +21,11 @@ class App extends react.Component<{}, { isAuthenticated: boolean }> {
     this.userAgentApplication = new UserAgentApplication(msalConfig);
     var user = this.userAgentApplication.getAccount();
     this.state = {
-      isAuthenticated: (user !== null)
+      isAuthenticated: (user !== null),
+      user:{}
     };
 
-    if (user) {
+    if (this.state.isAuthenticated) {
       this.LoadData()
     }
     this.submitForm = React.createRef();
@@ -33,7 +35,7 @@ class App extends react.Component<{}, { isAuthenticated: boolean }> {
       <div>
         <NavBar isAuthenticated={this.state.isAuthenticated}
           authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
-          user={{}} />
+          user={this.state.user} />
         <Container>
           <Row>
             <Col>
@@ -54,14 +56,12 @@ class App extends react.Component<{}, { isAuthenticated: boolean }> {
       this.setState({
         isAuthenticated: true,
       });
-      //await this.getUserProfile();
+      await this.getUserProfile();
     }
     catch (err) {
-      var errParts = err.split('|');
       this.setState({
         isAuthenticated: false,
-        //user: {},
-        //error: { message: errParts[1], debug: errParts[0] }
+        user: {},
       });
     }
   }
@@ -71,7 +71,31 @@ class App extends react.Component<{}, { isAuthenticated: boolean }> {
   }
 
   private LoadData() {
-    //this.getUserProfile();
+    this.getUserProfile();
+  }
+  async getUserProfile() {
+    try {
+      var accessToken = await this.userAgentApplication.acquireTokenSilent({
+        scopes: scopes
+      });
+      if (accessToken) {
+        var user = await getUserDetails(accessToken);
+        this.setState({
+          isAuthenticated: true,
+          user: {
+            displayName: user.displayName,
+            email: user.mail || user.userPrincipalName,
+            avatar: user.photo
+          },
+        });
+      }
+    }
+    catch (err) {
+        this.setState({
+        isAuthenticated: false,
+        user: {},
+      });
+    }
   }
 }
 
