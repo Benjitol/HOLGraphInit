@@ -45,7 +45,11 @@ export const scopes= ["User.Read"];
 ```
 
 1. Dans le fichier App.tsx il faut importer puis utiliser la classe permettant d'instancier l'application
-	1. Ajouter les lignes suivantes en haut du fichier
+	1.Changer la definition de la class afin d'y introduire un état authentifié
+	  ```javascript
+	  class App extends react.Component<{},{isAuthenticated:boolean}>
+	  ```
+	1.Ajouter les lignes suivantes en haut du fichier
   ```javascript
   import { UserAgentApplication} from 'msal';
   import { appId, scopes } from './Config';
@@ -59,7 +63,7 @@ export const scopes= ["User.Read"];
       };
       this.userAgentApplication = new UserAgentApplication(msalConfig);
       this.state = {
-        isAuthenticated: (user !== null)
+        isAuthenticated: false
       };
   ```
 1. Nous allons maintenant modifier la barre de navigation afin d'y ajouter les informations et actions de login
@@ -84,7 +88,12 @@ Votre utilisateur n'est "plus connecté".
 git clone -b Authent --single-branch https://github.com/Benjitol/HOLGraphInit.git
 
 ## Charger les données de l'utilisateur connecté (nom photo)
-Maintenant que notre utilisateur est connecté, nous allons pouvoir récuperer ses information de profils et sa photo
+Maintenant que notre utilisateur est connecté, nous allons pouvoir récuperer ses informations de profils et sa photo
+1. Changer la definition de la classe afin stocker les information de l'utilisateur connecté
+```javascript
+class App extends react.Component<{}, { isAuthenticated: boolean, user:any }>
+```
+
 		a. if (this.state.isAuthenticated) {
 		      this.LoadData()
 		    }
