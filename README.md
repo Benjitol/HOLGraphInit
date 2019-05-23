@@ -175,4 +175,9 @@ async getUserProfile() {
 ```
 4 Appeler cette méthode lorsque l'utilsateur est connecté, la Navbar affichera les informations de l'utilisateur.
 
+11. Si besoin, récuperer les réponses dans un nouveau projet à l'aide de la commande git suivante : 
+```bash
+git clone -b UserData --single-branch https://github.com/Benjitol/HOLGraphInit.git
+```
+
 
