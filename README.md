@@ -149,27 +149,27 @@ import {getUserDetails} from './Services/GraphServices';
 3. Créer la méthode de chargement des données de l'utilisateurs connecté
 ```javascript
 async getUserProfile() {
-		    try {
-		      var accessToken = ??
-		      if (accessToken) {
-		        var user = await getUserDetails(accessToken);
-		        this.setState({
-		          isAuthenticated: true,
-		          user: {
-		            displayName: user.displayName,
-		            email: user.mail || user.userPrincipalName,
-		            avatar: user.photo
-		          },
-		        });
-		      }
-		    }
-		    catch (err) {
-		        this.setState({
-		        isAuthenticated: false,
-		        user: {},
-		      });
-		    }
-		  }
+    try {
+      var accessToken = ??
+      if (accessToken) {
+	var user = await getUserDetails(accessToken);
+	this.setState({
+	  isAuthenticated: true,
+	  user: {
+	    displayName: user.displayName,
+	    email: user.mail || user.userPrincipalName,
+	    avatar: user.photo
+	  },
+	});
+      }
+    }
+    catch (err) {
+	this.setState({
+	isAuthenticated: false,
+	user: {},
+      });
+    }
+  }
 ```
 4 Appeler cette méthode lorsque l'utilsateur est connecté, la Navbar affichera les informations de l'utilisateur.
 
