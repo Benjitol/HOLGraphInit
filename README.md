@@ -83,8 +83,8 @@ Votre utilisateur n'est "plus connecté".
 11. Si besoin, récuperer les réponses dans un nouveau projet à l'aide de la commande git suivante : 
 git clone -b Authent --single-branch https://github.com/Benjitol/HOLGraphInit.git
 
-##Charger les données de l'utilisateur connecté (nom photo)
-
+## Charger les données de l'utilisateur connecté (nom photo)
+Maintenant que notre utilisateur est connecté, nous allons pouvoir récuperer ses information de profils et sa photo
 		a. if (this.state.isAuthenticated) {
 		      this.LoadData()
 		    }
