@@ -89,31 +89,68 @@ git clone -b Authent --single-branch https://github.com/Benjitol/HOLGraphInit.gi
 
 ## Charger les données de l'utilisateur connecté (nom photo)
 Maintenant que notre utilisateur est connecté, nous allons pouvoir récuperer ses informations de profils et sa photo
-1. Changer la definition de la classe afin stocker les information de l'utilisateur connecté
+pour celà nous allons interoger l'API Graph fournit par Microsoft à l'aide des librairies "graph client".
+1. Installer les packages nécessaires
+```bash
+npm install @microsoft/microsoft-graph-client
+npm install @microsoft/microsoft-graph-types
+```
+1. Créer un dossier "services" puis un fichier "GraphServices.ts"
+1. importer le graph client
+```javascript
+import { ResponseType, Client } from '@microsoft/microsoft-graph-client';
+```
+1. Créer la méthode afin d'instancier ce graph client et le connecter aux api
+```javascript
+function getAuthenticatedClient(accessToken: string) {
+   // Initialize Graph client
+    const client = Client.init({
+        authProvider: (done: any) => {
+            done(null, accessToken);
+        }
+    });
+    return client;
+}
+```
+1. Créer la methode afin de récuperer les [informations utilisateurs](https://docs.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=cs) (Email et Nom) 
+```javascript
+export async function getUserDetails(accessToken: string) {
+    const client = getAuthenticatedClient(accessToken);
+    const user = ??
+    return user;
+}
+```
+1. Créer la methode afin de récuperer la [Photo de l'utilisateur] (https://docs.microsoft.com/en-us/graph/api/profilephoto-get?view=graph-rest-1.0)
+
+```javascript
+export async function GetPhoto(path: string, accessToken: string) {
+}
+```
+1. Changer la definition de la classe (App.tsx) afin d'y stocker les informations de l'utilisateur connecté
 ```javascript
 class App extends react.Component<{}, { isAuthenticated: boolean, user:any }>
 ```
-
-		a. if (this.state.isAuthenticated) {
-		      this.LoadData()
-		    }
-		b. private LoadData() {
-		    this.getUserProfile();
-		  }
-		c. class App extends react.Component<{}, { isAuthenticated: boolean, user:any }>
-		d. this.state = {
-		      isAuthenticated: (user !== null),
-		      user:{}
-		    };
-		e. <NavBar isAuthenticated={this.state.isAuthenticated}
+2. Modifier l'initialisation du state et de la nav bar avec les données utilisateurs (vide pour le moment)
+```javascript
+this.state = {
+	isAuthenticated: (user !== null),
+	user:{}
+};
+```
+```javascript
+<NavBar isAuthenticated={this.state.isAuthenticated}
 		          authButtonMethod={this.state.isAuthenticated ? this.logout.bind(this) : this.login.bind(this)}
 		          user={this.state.user} />
-		
-		f. async getUserProfile() {
+```
+3. Importer la méthode de service
+```javascript
+import {getUserDetails} from './Services/GraphServices';
+```
+3. Créer la méthode de chargement des données de l'utilisateurs connecté
+```javascript
+async getUserProfile() {
 		    try {
-		      var accessToken = await this.userAgentApplication.acquireTokenSilent({
-		        scopes: scopes
-		      });
+		      var accessToken = ??
 		      if (accessToken) {
 		        var user = await getUserDetails(accessToken);
 		        this.setState({
@@ -133,25 +170,7 @@ class App extends react.Component<{}, { isAuthenticated: boolean, user:any }>
 		      });
 		    }
 		  }
-		g. npm install @microsoft/microsoft-graph-client
-		h. npm install @microsoft/microsoft-graph-types
-		i. export async function getUserDetails(accessToken: string) {
-		  const client = getAuthenticatedClient(accessToken);
-		
-		  const user = await client.api('/me').get();
-		  user.photo = await GetPhoto('/me', accessToken);
-		  return user;
-		}
-		
-		export async function GetPhoto(path: string, accessToken: string) {
-		  const client = getAuthenticatedClient(accessToken);
-		  const url = window.URL;
-		  let hasphoto = await client.api(path + '/photo').get();
-		  if (hasphoto)
-		    return url.createObjectURL(await client.api(path + '/photo/$value').responseType(ResponseType.BLOB).get());
-		
-		}
-		
-
+```
+4 Appeler cette méthode lorsque l'utilsateur est connecté, la Navbar affichera les informations de l'utilisateur.
 
 
