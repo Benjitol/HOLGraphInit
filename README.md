@@ -8,7 +8,7 @@ https://code.visualstudio.com/download
 2. NodeJS (v11.9.0)
 https://nodejs.org/download/release/v11.9.0/
 
-#Préparation
+# Préparation
 1. Récuperer les sources :
 ```bash
 git clone -b Init --single-branch https://github.com/Benjitol/HOLGraphInit.git
