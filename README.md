@@ -1,11 +1,11 @@
 # Prérequis
 1. Postman :
 https://www.getpostman.com/downloads/
-1. Git
+1. Git :
 https://git-scm.com/downloads
 1. VS Code :
 https://code.visualstudio.com/download
-2. NodeJS (v11.9.0)
+2. NodeJS (v11.9.0) : 
 https://nodejs.org/download/release/v11.9.0/
 
 # Préparation
@@ -57,6 +57,10 @@ export const scopes= ["User.Read"];
   ```javascript
   import { UserAgentApplication} from 'msal';
   import { appId, scopes } from './Config';
+  ```
+  1. Ajouter la propriété suivante
+  ```javascript
+  userAgentApplication: UserAgentApplication;
   ```
   1. Ajouter la configuration suivante dans le constructeur :
   ```javascript
