@@ -30,6 +30,10 @@ npm start
 	1. Types de compte pris en charge : sélectionnez les comptes à prendre en charge par l’application. dans notre cas séléctionner la seconde option (Comptes dans un annuaire organisationnel)
 	1. URI de redirection (facultatif) : sélectionnez le type d’application que vous créez, Web  pour nous puis entrez l’URI de redirection (ou URL de réponse) http://locahost:3000.
 	1. Récuperer l'Application ID
+## Tester son application avec les flux OAuth 2.0
+Recuperer la collection ci-dessous
+https://app.getpostman.com/run-collection/f77994d794bab767596d
+
 ## Mettre en place l'authentification MSAL
 Afin d'abstraire les protocoles (implicite grant dans notre cas) nous utiliserons la biliothèque fournit par Microsoft (https://www.npmjs.com/package/msal)
 1. Installer le package MSAL 
